@@ -12,7 +12,8 @@ function App() {
 const toggleDark=()=>setDark(!Dark)
 
   return (
-<div className={`min-h-screen font-mono ${Dark ? "bg-gray-800 text-white" : "bg-white text-black"}`}>
+<div className={`min-h-screen font-mono ${Dark ? "bg-gray-800 text-white" : "bg-[#dcdcdc] text-black"}`}>
+
 
   <div className="p-4 top-4 left-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 z-50">
     {/* Title */}

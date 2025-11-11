@@ -19,7 +19,7 @@ const handleEdit=()=>{
 
     <div
       key={index}
-      className={` h-64 relative bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col overflow-y-auto`}
+      className={` h-64 relative bg-white ${Dark?"dark:bg-gray-800 ":"bg-white"} rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col overflow-y-auto`}
     >
               {/* Delete Button */}
               <div className=" sticky top-0 right-0  flex flex-row gap-4 text-center mb-2 ">
@@ -42,7 +42,7 @@ const handleEdit=()=>{
       {/* Vertical bar */}
       <div
         className={`absolute left-0 top-0 bottom-0 w-1 rounded-l ${
-          Dark ? "bg-gray-600" : "bg-gray-700"
+          Dark ? "bg-gray-600" : "bg-gray-400"
         }`}
       ></div>
 
