@@ -1,61 +1,107 @@
-import React,{useState} from 'react';
-import { FaEdit, FaTimes } from "react-icons/fa";
+import React, { useState } from 'react';
+import { FaEdit, FaTimes, FaExpand,FaThumbt } from "react-icons/fa";
+import { BiPin } from "react-icons/bi";
 import EditNote from './EditNote';
-function NewNote({ note, index, noteList, setNoteList,Dark,setDark }) {
-const[EditModel,setEditModel]=useState(false)
+// import { FaThumbt } from "react-icons/fa";
 
-const handleDelete=()=>{
- const newList = noteList.filter((_, i) => i !== index);
-          setNoteList(newList);
-}
-const handleEdit=()=>{
+function NewNote({ note, index, noteList, setNoteList, Dark }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+   const [isPinned, setIsPinned] = useState(false);
+  const [currentDate] = useState(new Date());
 
-}
+  const handleDelete = () => {
+    const newList = noteList.filter((_, i) => i !== index);
+    setNoteList(newList);
+  };
+const togglePin = () => {
+  setIsPinned(prev => !prev);
 
-
+  const newList = [...noteList];
+  newList[index].pinned = !newList[index].pinned;
+  setNoteList(newList);
+};
 
   return (
-<div className=" gap-6 p-4 min-w-32">
+    <div className="gap-6 p-4 min-w-32 max-w-80 ">
 
-    <div
-      key={index}
-      className={` h-64 relative bg-white ${Dark?"dark:bg-gray-800 ":"bg-white"} rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col overflow-y-auto`}
+      {/* الكارد العادي */}
+  <div
+  key={index}
+  className={`h-48 relative rounded-xl p-4 shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-y-auto
+    ${Dark ? "bg-gray-800 text-white" : "bg-yellow-100 text-gray-900"}`}
+  style={{ transform: `rotate(${Math.random() * 4 - 2}deg)` }}
+>
+<button onClick={togglePin}>
+  <BiPin className={`${ isPinned?"text-red-600":"text-white-600"}`}/>
+  </button>
+  {/* الأزرار (Delete, Edit, Expand) */}
+  <div className="absolute top-2 right-2 flex gap-2 z-10 text-center ">
+    <button
+      onClick={handleDelete}
+      className="text-red-500 hover:text-white hover:bg-red-500 p-1 rounded transition"
     >
-              {/* Delete Button */}
-              <div className=" sticky top-0 right-0  flex flex-row gap-4 text-center mb-2 ">
-      <button
-         onClick={handleDelete}
-        className="self-end text-red-500 hover:text-red-700"
-      >
-        &#x2715;
-      </button>
-
-{/* 
+      <FaTimes />
+    </button>
     <EditNote
-    noteList={noteList}
-    setNoteList={setNoteList}
-    note={note}
-    index={index}
-    onClick={setEditModel(true)}
-    /> */}
-      </div>
-      {/* Vertical bar */}
-      <div
-        className={`absolute left-0 top-0 bottom-0 w-1 rounded-l ${
-          Dark ? "bg-gray-600" : "bg-gray-400"
-        }`}
-      ></div>
+      note={note}
+      index={index}
+      noteList={noteList}
+      setNoteList={setNoteList}
+      Dark={Dark}
+    />
+    <button
+      onClick={() => setIsExpanded(true)}
+      className="text-gray-500 hover:text-white hover:bg-gray-500 p-1 rounded transition"
+    >
+      <FaExpand />
+    </button>
+  </div>
 
-      {/* Note Text */}
-      <p className="ml-3 break-words text-sm sm:text-base flex-1">
-        {note.noteDescription}
-      </p>
+  {/* Title & Description */}
+  <p className="ml-3 font-bold text-lg truncate">{note.noteTitle}</p>
+<p
+  className="ml-3 mt-2 text-sm line-clamp-3 dark:text-gray-300"
+  style={{ color: "#3d3d3dff" }}
+>
+  {note.noteDescription}
+</p>
 
 
-    </div>
-
+  {/* Date & Time */}
+  <div className="mt-auto ml-3 text-gray-400 text-xs flex justify-between">
+    <span>{currentDate.toLocaleDateString()}</span>
+    <span>
+      {currentDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+    </span>
+  </div>
 </div>
 
+
+      {/* الكارد المكبر */}
+      {isExpanded && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 p-4">
+          <div className={`relative w-full max-w-3xl rounded-xl p-6 shadow-2xl ${Dark ? "bg-gray-900 text-white" : "bg-white text-black"}`}>
+            {/* Close Button */}
+            <button
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700"
+              onClick={() => setIsExpanded(false)}
+            >
+              <FaTimes size={20} />
+            </button>
+
+            {/* Title & Description */}
+            <h2 className="text-2xl font-bold mb-4">{note.noteTitle}</h2>
+            <p className="text-lg">{note.noteDescription}</p>
+
+            {/* Date & Time */}
+            <div className="mt-4 text-gray-400 text-sm flex justify-end gap-4">
+              <span>{currentDate.toLocaleDateString()}</span>
+              <span>{currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

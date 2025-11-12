@@ -1,15 +1,25 @@
 import { FaPlus } from "react-icons/fa";
-
-import { useState } from "react";
+import { FaEdit, FaTimes } from "react-icons/fa";
+import { useState ,useEffect } from "react";
 function AddNoteButton({note,index,noteList,setNoteList,Dark,setDark}) {
 
     const[Model,setModel]=useState(false)
 const [noteDescription , setNoteDescription]=useState('')
+const [noteTitle, setNoteTitle]=useState('')
 const [errorMessage, setError]=useState("");
 
-const handleAdd =()=>{
 
-if(!noteDescription){
+
+
+
+
+
+
+
+const handleAdd =(e)=>{
+   e.preventDefault()
+
+if(!noteTitle){
      setError("pleaes enter text before sending")
     setTimeout(() => {
           setError("")
@@ -17,33 +27,51 @@ if(!noteDescription){
   
 }
     else{
+const newNote = {
+  id: Date.now(),
+  noteTitle,
+  noteDescription,
+  pinned: false 
+};
+setNoteList([...noteList, newNote]);
 
 
-    setNoteList([...noteList ,{noteDescription}])
-        setNoteDescription(''); 
-    setModel(false)
+  // setNoteList([...noteList,   { id: Date.now(), noteTitle, noteDescription }])
+
+   setNoteTitle('');
+setNoteDescription('');
+setModel(false);
+
         }
 }
 
 const handleInput =(e)=>{
 
-       setNoteDescription(e.target.value);
+  const{name,value}=e.target
+      //  setNoteDescription(e.target.value);
+
+if(name === "note-Title")setNoteTitle(value)
+
+if(name === "note-Des")setNoteDescription(value)
 
 
 }
 
   return (
-<div className="flex flex-col items-center">
+<div className="flex flex-col items-center mt-4">
 
   {/* Add Note Button */}
-  <button
-    onClick={() => setModel(true)}
-    className={`flex items-center px-4 py-2 rounded ${
-      Dark ? "bg-gray-700 text-white hover:bg-gray-600" : "bg-blue-600 text-white hover:bg-blue-500"
-    }`}
-  >
-    <FaPlus className="mr-2" /> Add Note
-  </button>
+<button
+  onClick={() => setModel(true)}
+  className={`flex items-center px-4 py-2 rounded font-medium transition-colors ${
+   Dark
+      ? "bg-gray-700 text-white hover:bg-gray-600"
+      : "bg-blue-400 text-gray-900 hover:bg-blue-300"
+  }`}
+>
+  <FaPlus className="mr-2" /> Add Note
+</button>
+
 
   {/* Modal */}
   {Model && (
@@ -74,6 +102,18 @@ const handleInput =(e)=>{
       Add Note
     </h1>
 
+<input
+  type="text"
+  name="note-Title"
+  placeholder="Title"
+  value={noteTitle}
+  onChange={handleInput}
+  className={`col-span-6  rounded-lg p-3 resize-none outline-none border duration-300 focus:ring-2 focus:shadow-inner ${
+        Dark
+          ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-gray-400 focus:ring-gray-600"
+          : "bg-slate-50/80 border border-slate-200 text-slate-600 placeholder:text-slate-400 focus:border-slate-600 focus:ring-slate-200"
+      }`}
+/>
 
     {/* Note Textarea */}
     <textarea
@@ -83,6 +123,7 @@ const handleInput =(e)=>{
           : "bg-slate-50/80 border border-slate-200 text-slate-600 placeholder:text-slate-400 focus:border-slate-600 focus:ring-slate-200"
       }`}
       placeholder="Write your note..."
+      name="note-Des"
       value={noteDescription}
       onChange={handleInput}
     ></textarea>
