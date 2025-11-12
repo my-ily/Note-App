@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState ,useRef} from 'react';
 import { FaEdit, FaTimes, FaExpand,FaThumbt } from "react-icons/fa";
 import { BiPin } from "react-icons/bi";
 import EditNote from './EditNote';
+
+// import Draggable from 'react-draggable'
 // import { FaThumbt } from "react-icons/fa";
 
-function NewNote({ note, index, noteList, setNoteList, Dark }) {
+function NewNote({ note, index, noteList, setNoteList, Dark,setFilteredNotes }) {
+    const nodeRef = useRef(null);
   const [isExpanded, setIsExpanded] = useState(false);
    const [isPinned, setIsPinned] = useState(false);
   const [currentDate] = useState(new Date());
@@ -13,26 +16,29 @@ function NewNote({ note, index, noteList, setNoteList, Dark }) {
     const newList = noteList.filter((_, i) => i !== index);
     setNoteList(newList);
   };
-const togglePin = () => {
-  setIsPinned(prev => !prev);
 
-  const newList = [...noteList];
-  newList[index].pinned = !newList[index].pinned;
+
+
+const togglePin = () => {
+  const newList = noteList.map(n =>
+    n.id === note.id ? { ...n, pinned: !n.pinned } : n
+  );
   setNoteList(newList);
+  setFilteredNotes(newList); // إذا كنت تستخدم الفلترة
 };
 
   return (
+    
     <div className="gap-6 p-4 min-w-32 max-w-80 ">
 
-      {/* الكارد العادي */}
-  <div
+      <div 
   key={index}
-  className={`h-48 relative rounded-xl p-4 shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-y-auto
+  className={`h-48 w-64 md:gap-3 relative rounded-xl p-4 shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-y-auto
     ${Dark ? "bg-gray-800 text-white" : "bg-yellow-100 text-gray-900"}`}
   style={{ transform: `rotate(${Math.random() * 4 - 2}deg)` }}
 >
 <button onClick={togglePin}>
-  <BiPin className={`${ isPinned?"text-red-600":"text-white-600"}`}/>
+<BiPin className={`${ note.pinned ? "text-red-600" : "text-gray-400" }`} />
   </button>
   {/* الأزرار (Delete, Edit, Expand) */}
   <div className="absolute top-2 right-2 flex gap-2 z-10 text-center ">

@@ -9,30 +9,25 @@ const [noteTitle, setNoteTitle]=useState('')
 const [errorMessage, setError]=useState("");
 
 
+const handleEdit = (e) => {
+  e.preventDefault();
 
-const handleEdit =(e)=>{
-
-
-     e.preventDefault()
-
-   if (!noteDescription.trim()) {
-      setError("Please enter text before sending");
-      setTimeout(() => setError(""), 2000);
-      return;
-    }
-
-    // تعديل الملاحظة في مكانها
-    else{
-        let taskIndex = noteList.indexOf(note);
-        noteList.splice(taskIndex,1)
+  if (!noteDescription.trim()) {
+    setError("Please enter text before sending");
+    setTimeout(() => setError(""), 2000);
+    return;
+  }
 
 
-    setNoteList([...noteList , {noteTitle,noteDescription}])
-    console.log(noteList);
+  const newList = noteList.map(n =>
+    n.id === note.id
+      ? { ...n, noteTitle, noteDescription } 
+      : n
+  );
 
-    setModel(false);
-    }
-}
+  setNoteList(newList);
+  setModel(false);
+};
 
 
 

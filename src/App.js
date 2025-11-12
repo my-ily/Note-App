@@ -3,9 +3,15 @@ import './App.css';
 import { FaSun, FaMoon } from "react-icons/fa";
 import AddNoteButton from './components/AddNoteButton';
 import NewNote from './components/NewNote';
-
+import testNote from './components/todo';
 function App() {
-  const [noteList, setNoteList] = useState([])
+  const [noteList, setNoteList] = useState(()=>{
+    /** ==========================test ============================== */
+   return JSON.parse(localStorage.getItem("notes")) || testNote
+
+ 
+
+})
       
   const [Dark, setDark] = useState(true);
   const [SearchValue, setSearchValue] = useState('');
@@ -15,19 +21,15 @@ function App() {
 
 
 
-useEffect(()=>{
-    const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-    setNoteList(savedNotes);
+// useEffect(()=>{
+//     const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+//     setNoteList(savedNotes);
  
 
-},[])
-
-useEffect(()=>{
-
-localStorage.setItem("notes",JSON.stringify(noteList) )
-  console.log("تم تحديث localStorage:", noteList);
-
-},[noteList])
+// },[])
+useEffect(() => {
+  localStorage.setItem("notes", JSON.stringify(noteList));
+}, [noteList]);
 
 
 
@@ -105,8 +107,9 @@ localStorage.setItem("notes",JSON.stringify(noteList) )
         setDark={setDark}
       />
       {/*  ============================== Notes List ============================== */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 p-2 mt-4">
-        {noteList
+     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 mt-4">
+
+        {filteredNotes
   .sort((a, b) => b.pinned - a.pinned) // المثبتة تظهر أولاً
   .map((note, index) => (
     <NewNote
@@ -116,6 +119,20 @@ localStorage.setItem("notes",JSON.stringify(noteList) )
       noteList={noteList}
       setNoteList={setNoteList}
       Dark={Dark}
+      setFilteredNotes={setFilteredNotes}
+    />
+)) 
+/** ==========================test ============================== */
+&& testNote.sort((a, b) => b.pinned - a.pinned) // المثبتة تظهر أولاً
+  .map((note, index) => (
+    <NewNote
+      key={note.id} // الأفضل استخدام id فريد بدل index
+      note={note}
+      index={index}
+      noteList={noteList}
+      setNoteList={setNoteList}
+      Dark={Dark}
+      setFilteredNotes={setFilteredNotes}
     />
 ))
 

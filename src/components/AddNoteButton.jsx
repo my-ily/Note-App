@@ -33,6 +33,9 @@ const newNote = {
   noteDescription,
   pinned: false 
 };
+
+
+
 setNoteList([...noteList, newNote]);
 
 
