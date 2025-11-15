@@ -1,9 +1,17 @@
 import { FaPlus } from "react-icons/fa";
 import { FaEdit, FaTimes } from "react-icons/fa";
 import { useState ,useEffect } from "react";
+
+
+/**
+ * Model
+ * handle data take from model
+ * assign data to noteList array as an object (title,id,des,pinned)
+ */
 function AddNoteButton({note,index,noteList,setNoteList,Dark,setDark}) {
 
     const[Model,setModel]=useState(false)
+
 const [noteDescription , setNoteDescription]=useState('')
 const [noteTitle, setNoteTitle]=useState('')
 const [errorMessage, setError]=useState("");
@@ -19,13 +27,21 @@ const [errorMessage, setError]=useState("");
 const handleAdd =(e)=>{
    e.preventDefault()
 
-if(!noteTitle){
-     setError("pleaes enter text before sending")
+if(!noteTitle ){
+     setError("pleaes Enter note Title before sending")
     setTimeout(() => {
           setError("")
     }, 2000);
   
 }
+else if(!noteDescription){
+     setError("pleaes Enter note Description before sending")
+    setTimeout(() => {
+          setError("")
+    }, 2000);
+  
+}
+
     else{
 const newNote = {
   id: Date.now(),
@@ -39,7 +55,6 @@ const newNote = {
 setNoteList([...noteList, newNote]);
 
 
-  // setNoteList([...noteList,   { id: Date.now(), noteTitle, noteDescription }])
 
    setNoteTitle('');
 setNoteDescription('');
@@ -57,7 +72,6 @@ if(name === "note-Title")setNoteTitle(value)
 
 if(name === "note-Des")setNoteDescription(value)
 
-
 }
 
   return (
@@ -68,15 +82,18 @@ if(name === "note-Des")setNoteDescription(value)
   onClick={() => setModel(true)}
   className={`flex items-center px-4 py-2 rounded font-medium transition-colors ${
    Dark
-      ? "bg-gray-700 text-white hover:bg-gray-600"
-      : "bg-blue-400 text-gray-900 hover:bg-blue-300"
+      ? " text-white hover:text-gray-600"
+      : " text-gray-900 hover:text-blue-300"
   }`}
 >
-  <FaPlus className="mr-2" /> Add Note
+<img src="https://cdn-icons-png.flaticon.com/512/7235/7235504.png " width="40" height="40" />
+  {/* <FaPlus className="mr-2" /> Add Note */}
 </button>
 
 
-  {/* Modal */}
+  {/* conditional Modal */}
+
+
   {Model && (
 
    <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">

@@ -1,5 +1,5 @@
 import React,{useState ,useEffect} from 'react'
-import { FaEdit, FaTimes } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import ReactDOM from "react-dom";
 function EditNote({note,index,noteList,setNoteList,Dark}) {
 
@@ -16,6 +16,7 @@ const handleEdit = (e) => {
     setError("Please enter text before sending");
     setTimeout(() => setError(""), 2000);
     return;
+    
   }
 
 
@@ -132,7 +133,7 @@ const handleInput = (e) => {
         </button>
       </div>
     </div>,
-    document.body // ✅ هنا السحر، المودال يُضاف فعليًا داخل <body>
+    document.body //
   )}
 
       </div>
